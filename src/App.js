@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 
-function App() {
+import { getToken } from "./utils/cookies";
+import { GlobalContext } from "./utils/GlobalContext";
+
+import Home from "./components/home/Home";
+import Login from "./components/login/Login";
+import Register from "./components/register/Register";
+import { validateToken } from "./utils/fetching";
+
+export default function App() {
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      if (token === "") {
+        const possibleToken = getToken();
+
+        if (possibleToken === null) {
+          setToken(null);
+          return;
+        }
+
+        const wasValid = await validateToken(possibleToken);
+        if (!wasValid.status) {
+          setToken(null);
+
+          return;
+        }
+
+        setToken(possibleToken);
+      }
+    })();
+  }, [token]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <GlobalContext.Provider value={{ token, setToken }}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </BrowserRouter>
+    </GlobalContext.Provider>
   );
 }
-
-export default App;

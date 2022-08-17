@@ -1,0 +1,40 @@
+nav {
+  width: 100%;
+  padding: 1em;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #000;
+}
+
+nav div {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+nav div:nth-child(2) {
+  gap: 20px;
+}
+
+nav div:nth-child(2) p {
+  cursor: pointer;
+}
+
+nav div:nth-child(2) p:hover {
+  text-decoration: underline;
+}
+
+main {
+  padding: 1em;
+}
+
+.logout {
+  border: 1px solid black;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  font-weight: bold;
+}
